@@ -1,0 +1,42 @@
+{
+  "name": "@supercharge/installer",
+  "description": "Supercharge application installer",
+  "version": "1.0.0",
+  "author": {
+    "name": "Marcus Pöhls",
+    "email": "marcus@futurestud.io"
+  },
+  "bin": {
+    "supercharge": "cli.js"
+  },
+  "bugs": {
+    "url": "https://github.com/superchargejs/installer/issues"
+  },
+  "dependencies": {
+    "@adonisjs/ace": "~5.0.8",
+    "execa": "~1.0.0",
+    "listr": "~0.14.3"
+  },
+  "devDependencies": {
+    "eslint": "~5.12.1",
+    "eslint-config-standard": "~12.0.0",
+    "eslint-plugin-import": "~2.15.0",
+    "eslint-plugin-node": "~8.0.1",
+    "eslint-plugin-promise": "~4.0.1",
+    "eslint-plugin-standard": "~4.0.0"
+  },
+  "engines": {
+    "node": ">=8",
+    "npm": ">=3"
+  },
+  "homepage": "https://github.com/superchargejs/installer",
+  "keywords": [],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superchargejs/installer.git"
+  }
+}
