@@ -2,10 +2,7 @@
   "name": "@supercharge/installer",
   "description": "Supercharge application installer",
   "version": "1.0.0",
-  "author": {
-    "name": "Marcus Pöhls",
-    "email": "marcus@futurestud.io"
-  },
+  "author": "Marcus Pöhls <marcus@futurestud.io>",
   "bin": {
     "supercharge": "cli.js"
   },
@@ -30,11 +27,12 @@
     "npm": ">=3"
   },
   "homepage": "https://github.com/superchargejs/installer",
-  "keywords": [],
+  "keywords": [
+    "supercharge",
+    "superchargejs",
+    "installer"
+  ],
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/superchargejs/installer.git"
