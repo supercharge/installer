@@ -11,5 +11,8 @@ npm-debug.log*
 # Optional npm cache directory
 .npm
 
-# IDEA
+# IDEs & editors
 .idea
+.vscode
+
+.vagrant
