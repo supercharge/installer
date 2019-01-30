@@ -51,12 +51,7 @@ class New extends Command {
     ])
 
     await tasks.run()
-
-    try {
-      await this.runAppSetup(name)
-    } catch (error) {
-      console.error(error)
-    }
+    await this.runAppSetup(name)
   }
 
   async ensureEmptyInstallPath (appName) {
@@ -67,7 +62,7 @@ class New extends Command {
     const files = await readDir(this.appPath)
 
     if (files.length > 0) {
-      throw new Error(`The install directory is not empty. Cannot install ${appName} here.`)
+      throw new Error(`The install directory is not empty. Cannot install into "${appName}".`)
     }
   }
 
@@ -81,7 +76,7 @@ class New extends Command {
   }
 
   async runAppSetup (name) {
-    await Execa('node', ['craft', 'setup', `--name=${name}`], {
+    return Execa('node', ['craft', 'setup', `--name=${name}`], {
       stdin: 'inherit',
       stdout: 'inherit',
       cwd: this.appPath
