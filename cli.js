@@ -8,5 +8,6 @@ const UpdateNotifier = require('update-notifier')
 UpdateNotifier({ pkg: Pkg }).notify({ isGlobal: true })
 
 Ace.addCommand(require('./commands/new'))
+
 Ace.wireUpWithCommander()
-Ace.invoke()
+Ace.invoke(Pkg)
