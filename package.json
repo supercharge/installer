@@ -28,11 +28,14 @@
   },
   "homepage": "https://github.com/superchargejs/installer",
   "keywords": [
+    "installer",
     "supercharge",
-    "superchargejs",
-    "installer"
+    "superchargejs"
   ],
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/superchargejs/installer.git"
