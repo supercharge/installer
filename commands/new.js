@@ -52,6 +52,7 @@ class New extends Command {
 
     await tasks.run()
     await this.runAppSetup(name)
+    this.success('\nEnjoy the ride!')
   }
 
   async ensureEmptyInstallPath (appName) {
