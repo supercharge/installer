@@ -9,11 +9,13 @@ const readDir = promisify(Fs.readdir)
 const readFile = promisify(Fs.readFile)
 const writeFile = promisify(Fs.writeFile)
 const { Command } = require('@adonisjs/ace')
+const Slugify = require('@sindresorhus/slugify')
 
 class New extends Command {
   constructor () {
     super()
 
+    this.appName = null
     this.appPath = null
     this.blueprint = 'git@github.com:superchargejs/supercharge.git'
   }
@@ -35,14 +37,15 @@ class New extends Command {
    */
   async handle ({ name }) {
     try {
-      this.appPath = Path.resolve(process.cwd(), name)
+      this.appName = name
+      this.appPath = Path.resolve(process.cwd(), this.appName)
 
       this.success('Crafting a new Supercharge application\n')
 
       const tasks = new Listr([
         {
           title: 'Ensure installation directory is empty',
-          task: () => this.ensureEmptyInstallPath(name)
+          task: () => this.ensureEmptyInstallPath()
         },
         {
           title: 'Crafting your application',
@@ -59,7 +62,7 @@ class New extends Command {
       ])
 
       await tasks.run()
-      await this.runAppSetup(name)
+      await this.runAppSetup()
 
       this.success('\nEnjoy the ride!')
     } catch (error) {
@@ -71,11 +74,9 @@ class New extends Command {
   /**
    * Ensure the installation directory doesn’t exist yet.
    *
-   * @param {String} appName
-   *
    * @throws
    */
-  async ensureEmptyInstallPath (appName) {
+  async ensureEmptyInstallPath () {
     if (!await this.pathExists(this.appPath)) {
       return
     }
@@ -83,7 +84,7 @@ class New extends Command {
     const files = await readDir(this.appPath)
 
     if (files.length > 0) {
-      throw new Error(`The install directory is not empty. Cannot install into "${appName}".`)
+      throw new Error(`The install directory is not empty. Cannot install into "${this.appName}".`)
     }
   }
 
@@ -94,7 +95,21 @@ class New extends Command {
   async craftApp () {
     await Execa('git', ['clone', '--depth=1', this.blueprint, this.appPath])
     await this.removeDir(Path.resolve(this.appPath, '.git'))
+    await this.setAppName()
     await this.resetVersion()
+    await this.resetDescription()
+  }
+
+  /**
+   * Reset the default Supercharge applicaiton
+   * and set it to `0.0.0`.
+   */
+  async setAppName () {
+    const pkg = await this.getPackageJson()
+
+    pkg.name = Slugify(this.appName)
+
+    await this.savePackageJson(pkg)
   }
 
   /**
@@ -102,15 +117,58 @@ class New extends Command {
    * and set it to `0.0.0`.
    */
   async resetVersion () {
-    const pkgPath = Path.resolve(this.appPath, 'package.json')
-
-    const pkg = JSON.parse(
-      await readFile(pkgPath, 'utf8')
-    )
+    const pkg = await this.getPackageJson()
 
     pkg.version = '0.0.0'
 
-    await writeFile(pkgPath, JSON.stringify(pkg, null, 2))
+    await this.savePackageJson(pkg)
+  }
+
+  /**
+   * Reset the default Supercharge applicaiton
+   * and set it to `0.0.0`.
+   */
+  async resetDescription () {
+    const pkg = await this.getPackageJson()
+
+    pkg.description = ''
+
+    await this.savePackageJson(pkg)
+  }
+
+  /**
+   * Reads the `package.json` file from
+   * disk, parses the JSON to an object
+   * returns the JavaScript object.
+   *
+   * @returns {Object}
+   */
+  async getPackageJson () {
+    return JSON.parse(
+      await readFile(this.packageJsonPath(), 'utf8')
+    )
+  }
+
+  /**
+   * Write the given `content` to the
+   * app’s `package.json` file.
+   *
+   * @param {String} content
+   */
+  async savePackageJson (content) {
+    await writeFile(this.packageJsonPath(),
+      JSON.stringify(content, null, 2)
+    )
+  }
+
+  /**
+   * Returns the absolute path to the
+   * app’s `package.json` file.
+   *
+   * @returns {String}
+   */
+  packageJsonPath () {
+    return Path.resolve(this.appPath, 'package.json')
   }
 
   /**
@@ -124,11 +182,9 @@ class New extends Command {
    * Run the `node craft setup` command to
    * create a `.env` file and generate
    * an application key.
-   *
-   * @param {String} name
    */
-  async runAppSetup (name) {
-    return Execa('node', ['craft', 'setup', `--name=${name}`], {
+  async runAppSetup () {
+    return Execa('node', ['craft', 'setup', `--name=${this.appName}`], {
       stdin: 'inherit',
       stdout: 'inherit',
       cwd: this.appPath
