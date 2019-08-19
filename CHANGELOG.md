@@ -4,8 +4,10 @@
 ## [2.0.0](https://github.com/superchargejs/installer/compare/v1.0.0...v2.0.0) - 2019-08-19
 
 ### Added
-- error handling
-- set version to `0.0.0` when crafting the app
+- show errors when the installation goes south
+- when crafting the app
+  - set app name and description in `package.json`
+  - set version to `0.0.0` in `package.json`
 
 ### Updated
 - bump dependencies
