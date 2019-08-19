@@ -1,7 +1,7 @@
 # Changelog
 
 
-## [2.0.0](https://github.com/superchargejs/installer/compare/v1.0.0...v2.0.0) - 2019-08-xx
+## [2.0.0](https://github.com/superchargejs/installer/compare/v1.0.0...v2.0.0) - 2019-08-19
 
 ### Added
 - error handling
