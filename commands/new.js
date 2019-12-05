@@ -17,7 +17,7 @@ class New extends Command {
 
     this.appName = null
     this.appPath = null
-    this.blueprint = 'git@github.com:superchargejs/supercharge.git'
+    this.blueprint = 'https://github.com/superchargejs/supercharge.git'
   }
 
   static get signature () {
