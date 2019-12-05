@@ -11,7 +11,7 @@ const writeFile = promisify(Fs.writeFile)
 const { Command } = require('@adonisjs/ace')
 const Slugify = require('@sindresorhus/slugify')
 
-class New extends Command {
+class NewCommand extends Command {
   constructor () {
     super()
 
@@ -20,18 +20,28 @@ class New extends Command {
     this.blueprint = 'https://github.com/superchargejs/supercharge.git'
   }
 
+  /**
+   * Returns the command signature.
+   *
+   * @returns {String}
+   */
   static get signature () {
     return `new
       { name: The name of your application directory }
     `
   }
 
+  /**
+   * Returns the command description.
+   *
+   * @returns {String}
+   */
   static get description () {
     return 'Create a new Supercharge application'
   }
 
   /**
-   * Create a new, greenfield Supercharge project.
+   * Create a new, fresh Supercharge project.
    *
    * @param {Object} parameters
    */
@@ -42,26 +52,7 @@ class New extends Command {
 
       this.success('Crafting a new Supercharge application\n')
 
-      const tasks = new Listr([
-        {
-          title: 'Ensure installation directory is empty',
-          task: () => this.ensureEmptyInstallPath()
-        },
-        {
-          title: 'Crafting your application',
-          task: () => this.craftApp()
-        },
-        {
-          title: 'Install application dependencies',
-          task: () => this.installAppDependencies()
-        },
-        {
-          title: 'Initialize application setup',
-          task: () => Promise.resolve()
-        }
-      ])
-
-      await tasks.run()
+      await this.createApp()
       await this.runAppSetup()
 
       this.success('\nEnjoy the ride!')
@@ -69,6 +60,32 @@ class New extends Command {
       this.prettyPrintError(error)
       process.exit(1)
     }
+  }
+
+  /**
+   * Run the individual steps to create a new Supercharge app.
+   */
+  async createApp () {
+    const tasks = new Listr([
+      {
+        title: 'Ensure installation directory is empty',
+        task: () => this.ensureEmptyInstallPath()
+      },
+      {
+        title: 'Crafting your application',
+        task: () => this.craftApp()
+      },
+      {
+        title: 'Install application dependencies',
+        task: () => this.installAppDependencies()
+      },
+      {
+        title: 'Initialize application setup',
+        task: () => Promise.resolve()
+      }
+    ])
+
+    await tasks.run()
   }
 
   /**
@@ -101,8 +118,7 @@ class New extends Command {
   }
 
   /**
-   * Reset the default Supercharge applicaiton
-   * and set it to `0.0.0`.
+   * Inject a new app name based on the scaffolding name.
    */
   async setAppName () {
     const pkg = await this.getPackageJson()
@@ -113,8 +129,7 @@ class New extends Command {
   }
 
   /**
-   * Reset the default Supercharge applicaiton
-   * and set it to `0.0.0`.
+   * Set the app version to `0.0.0`.
    */
   async resetVersion () {
     const pkg = await this.getPackageJson()
@@ -125,8 +140,7 @@ class New extends Command {
   }
 
   /**
-   * Reset the default Supercharge applicaiton
-   * and set it to `0.0.0`.
+   * Set an empty app description.
    */
   async resetDescription () {
     const pkg = await this.getPackageJson()
@@ -137,9 +151,8 @@ class New extends Command {
   }
 
   /**
-   * Reads the `package.json` file from
-   * disk, parses the JSON to an object
-   * returns the JavaScript object.
+   * Reads the `package.json` file from disk, parses the
+   * JSON to an object returns the JavaScript object.
    *
    * @returns {Object}
    */
@@ -150,13 +163,13 @@ class New extends Command {
   }
 
   /**
-   * Write the given `content` to the
-   * app’s `package.json` file.
+   * Write the given `content` to the app’s `package.json` file.
    *
    * @param {String} content
    */
   async savePackageJson (content) {
-    await writeFile(this.packageJsonPath(),
+    await writeFile(
+      this.packageJsonPath(),
       JSON.stringify(content, null, 2)
     )
   }
@@ -201,4 +214,4 @@ class New extends Command {
   }
 }
 
-module.exports = New
+module.exports = NewCommand
