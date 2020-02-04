@@ -2,7 +2,7 @@
   "name": "@supercharge/installer",
   "description": "Supercharge application installer",
   "version": "2.0.1",
-  "author": "Marcus Poehls <marcus@futurestud.io>",
+  "author": "Marcus Poehls <marcus@superchargejs.com>",
   "bin": {
     "supercharge": "cli.js"
   },
