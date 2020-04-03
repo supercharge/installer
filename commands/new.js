@@ -76,11 +76,11 @@ class NewCommand extends Command {
         task: () => this.craftApp()
       },
       {
-        title: 'Install application dependencies',
+        title: 'Installing application dependencies',
         task: () => this.installAppDependencies()
       },
       {
-        title: 'Initialize application setup',
+        title: 'Initializing application setup',
         task: () => Promise.resolve()
       }
     ])
