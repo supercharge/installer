@@ -14,7 +14,8 @@
     "@sindresorhus/slugify": "~0.9.1",
     "execa": "~3.4.0",
     "listr": "~0.14.3",
-    "update-notifier": "~4.0.0"
+    "update-notifier": "~4.0.0",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "eslint": "~6.8.0",
@@ -40,5 +41,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/superchargejs/installer.git"
-  }
+  },
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
