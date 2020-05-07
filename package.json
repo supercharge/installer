@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@adonisjs/ace": "~5.0.8",
-    "@sindresorhus/slugify": "~0.9.1",
+    "@sindresorhus/slugify": "~1.0.0",
     "execa": "~3.4.0",
     "listr": "~0.14.3",
     "update-notifier": "~4.0.0"
