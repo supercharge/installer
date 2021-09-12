@@ -10,7 +10,7 @@
     "url": "https://github.com/superchargejs/installer/issues"
   },
   "dependencies": {
-    "@adonisjs/ace": "~5.0.8",
+    "@adonisjs/ace": "~6.0.0",
     "@sindresorhus/slugify": "~0.9.1",
     "execa": "~3.4.0",
     "listr": "~0.14.3",
